@@ -21,4 +21,11 @@ class ProfileListView(generics.ListAPIView):
 class ProfileRegisterView(generics.CreateAPIView):
     queryset = Profile.objects.all()
     serializer_class = RegisterSerializer
-    permission_classes = [AllowAny, ]
+    permission_classes = [IsAdmin, IsAuthenticated]
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated,])
+def profileRetrieveView(request: Request):
+    profile = Profile.objects.get(user_id=request.user.id)
+    serialized = ProfileSerializer(profile)
+    return JsonResponse(serialized.data)
