@@ -7,7 +7,7 @@ from .models import Profile
 class RegisterSerializer(serializers.Serializer):
     first_name = serializers.CharField(required=True, max_length=50)
     last_name = serializers.CharField(required=True, max_length=50)
-    username = password = serializers.CharField(required=True,max_length=50)
+    username = serializers.CharField(required=True,max_length=50)
     password = serializers.CharField(
         write_only=True,
         required=True,
