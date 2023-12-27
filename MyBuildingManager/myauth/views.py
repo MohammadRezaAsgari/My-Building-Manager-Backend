@@ -12,6 +12,11 @@ from .serializers import RegisterSerializer, ProfileSerializer
 def isAdmin(request: Request):
     return JsonResponse({"isadmin": Profile.objects.get(user_id=request.user.id).is_admin})
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated,])
+def isAuthenticated(request: Request):
+    return JsonResponse({"detail": "ok"})
+
 class ProfileListView(generics.ListAPIView):
     queryset = Profile.objects.filter(is_admin=False)
     serializer_class = ProfileSerializer

@@ -6,4 +6,5 @@ urlpatterns = [
     path('profiles/', ProfileListView.as_view()),
     path('profiles/get/', profileRetrieveView),
     path('isadmin/', isAdmin),
+    path('isauth/', isAuthenticated),
 ]

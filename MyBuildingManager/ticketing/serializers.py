@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Ticket, TicketReply, Announcement
+from myauth.serializers import ProfileSerializer
 
 class TicketSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,7 +29,10 @@ class TicketReplySerializer(serializers.ModelSerializer):
                   'description',
                   'created_at')
 
+
+
 class AnnouncementSerializer(serializers.ModelSerializer):
+    author = ProfileSerializer(read_only=True)
     class Meta:
         model = Announcement
         fields = (
@@ -39,8 +43,3 @@ class AnnouncementSerializer(serializers.ModelSerializer):
             'created_at',
             )
         
-        extra_kwargs = {
-            'author': {
-            'read_only': True,
-            },
-        }
