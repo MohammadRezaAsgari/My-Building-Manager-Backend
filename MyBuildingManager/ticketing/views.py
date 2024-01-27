@@ -3,7 +3,7 @@ from rest_framework.permissions import IsAuthenticated,AllowAny, IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes
 from django.http import JsonResponse
 from rest_framework import generics
-from .models import Ticket,TicketReply, Announcement
+from .models import Ticket, Announcement, TicketStatus
 from .serializers import TicketSerializer,TicketReplySerializer, AnnouncementSerializer
 from myauth.permissions import IsAdmin
 from myauth.models import Profile
@@ -27,20 +27,21 @@ class TicketListCreateView(generics.ListCreateAPIView):
 class TicketRetrieveUpdateView(generics.RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated, ]
     queryset = Ticket.objects.all()
-    serializer_class = TicketSerializer
+    serializer_class = TicketReplySerializer
 #----------------------------------------------------------------------------------
 
 
 #Replies APIs ---------------------------------------------------------------------
-class ReplyListCreateView(generics.ListCreateAPIView):
-    queryset = TicketReply.objects.all()
-    serializer_class = TicketReplySerializer
-    permission_classes = [AllowAny,IsAdmin, IsAuthenticated ]
+class TicketReplyView(generics.UpdateAPIView):
+    permission_classes = [IsAuthenticated, ]
+    queryset = Ticket.objects.all()
+    serializer_class = TicketReplySerializer   
 
-    def perform_create(self, serializer):
+    def perform_update(self, serializer):
         try:
-            reply = serializer.save()
-            TicketReply.update(id=reply.parent_ticket.id)
+            ticket = serializer.save()
+            ticket.status = TicketStatus.REP
+            ticket.save()
         except:
             return
     
@@ -49,11 +50,6 @@ class ReplyListCreateView(generics.ListCreateAPIView):
             return [AllowAny(),]
         elif self.request.method in NOT_SAFE_METHODS:
             return  [IsAdmin(), IsAuthenticated() ]
-
-class ReplyRetrieveUpdateView(generics.RetrieveUpdateAPIView):
-    permission_classes = [IsAuthenticated, ]
-    queryset = TicketReply.objects.all()
-    serializer_class = TicketReplySerializer
 #----------------------------------------------------------------------------------
 
 

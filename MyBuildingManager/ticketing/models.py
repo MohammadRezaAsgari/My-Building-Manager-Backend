@@ -20,12 +20,7 @@ class Ticket(models.Model):
     description = models.TextField()
     created_at = models.DateTimeField('created at', auto_now_add=True)
     status = models.CharField(max_length=10, choices=TicketStatus.choices, default=TicketStatus.PEND)
-
-class TicketReply(models.Model):
-    parent_ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
-    description = models.TextField()
-    created_at = models.DateTimeField('created at', auto_now_add=True)
-
+    reply_description = models.TextField(default=None,blank=True,null=True)
     update = ModelManager().update_status
 
 class Announcement(models.Model):
