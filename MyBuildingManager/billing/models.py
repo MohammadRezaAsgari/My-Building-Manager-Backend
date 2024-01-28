@@ -15,6 +15,8 @@ class Bill(models.Model):
     payment_status = models.BooleanField(default=False)
     receipt_photo  = models.FileField(upload_to='uploads/receipt_photo/',null=True,blank=True)
 
+    def calculate_total(self):
+        return self.water + self.electric + self.gas + self.charge + self.others
 
 @receiver(models.signals.post_delete, sender=Bill)
 def auto_delete_file_on_delete(sender, instance, **kwargs):

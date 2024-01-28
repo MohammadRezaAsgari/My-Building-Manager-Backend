@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'myauth',
     'ticketing',
     'billing',
+    'payment',
  
 ]
 
