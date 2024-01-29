@@ -14,7 +14,7 @@ NOT_SAFE_METHODS = ('POST', 'PUT', 'PATCH','DELETE')
 #Tickets APIs ---------------------------------------------------------------------
 class TicketListCreateView(generics.ListCreateAPIView):
     queryset = Ticket.objects.all()
-    serializer_class = TicketSerializer
+    serializer_class = TicketReplySerializer
     permission_classes = [IsAuthenticatedOrReadOnly, ]
 
     def perform_create(self, serializer):
